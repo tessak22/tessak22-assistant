@@ -14,12 +14,12 @@ export function Nav() {
   const pathname = usePathname();
 
   return (
-    <nav className="bg-white border-b border-slate-200 shadow-sm">
+    <nav className="bg-white border-b border-[var(--color-border)] shadow-sm">
       <div className="max-w-5xl mx-auto px-4">
         <div className="flex items-center justify-between h-14">
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-lg font-bold text-blue-600">Ivy Lee</span>
-            <span className="text-sm text-slate-400 font-medium">
+            <span className="text-lg font-bold text-[var(--color-primary)]">Ivy Lee</span>
+            <span className="text-sm text-[var(--color-text-muted)] font-medium">
               Tracker
             </span>
           </Link>
@@ -35,8 +35,8 @@ export function Nav() {
                   href={link.href}
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                     isActive
-                      ? "bg-blue-50 text-blue-700"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                      ? "bg-[var(--color-primary-light)] text-[var(--color-primary)]"
+                      : "text-[var(--color-dark-muted)] hover:text-[var(--color-dark)] hover:bg-[var(--color-primary-light)]/30"
                   }`}
                 >
                   {link.label}

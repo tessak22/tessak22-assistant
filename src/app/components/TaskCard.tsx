@@ -32,7 +32,7 @@ const priorityStyles: Record<number, string> = {
   1: "border-l-red-500",
   2: "border-l-orange-400",
   3: "border-l-yellow-400",
-  4: "border-l-blue-400",
+  4: "border-l-[#00c2d8]",
   5: "border-l-gray-300",
 };
 
@@ -68,7 +68,7 @@ export function TaskCard({
 
   return (
     <div
-      className={`bg-white border border-slate-200 rounded-lg border-l-4 ${
+      className={`bg-white border border-[var(--color-border)] rounded-lg border-l-4 ${
         priorityStyles[task.priority] || "border-l-gray-300"
       } ${isDone ? "opacity-60" : ""} ${
         compact ? "p-3" : "p-4"
@@ -76,14 +76,14 @@ export function TaskCard({
     >
       <div className="flex items-start gap-3">
         {showPosition && task.position && (
-          <span className="flex-shrink-0 w-7 h-7 rounded-full bg-blue-100 text-blue-700 text-sm font-bold flex items-center justify-center">
+          <span className="flex-shrink-0 w-7 h-7 rounded-full bg-[var(--color-primary-light)] text-[var(--color-primary)] text-sm font-bold flex items-center justify-center">
             {task.position}
           </span>
         )}
         {onComplete && !isDone && (
           <button
             onClick={() => onComplete(task.id)}
-            className="flex-shrink-0 w-5 h-5 mt-0.5 rounded border-2 border-slate-300 hover:border-blue-500 hover:bg-blue-50 transition-colors"
+            className="flex-shrink-0 w-5 h-5 mt-0.5 rounded border-2 border-slate-300 hover:border-[var(--color-primary)] hover:bg-[var(--color-primary-light)] transition-colors"
             title="Mark complete"
           />
         )}
@@ -96,21 +96,21 @@ export function TaskCard({
           <div className="flex items-center gap-2 flex-wrap">
             <h3
               className={`text-sm font-medium ${
-                isDone ? "line-through text-slate-400" : "text-slate-900"
+                isDone ? "line-through text-[var(--color-text-muted)]" : "text-[var(--color-dark)]"
               }`}
             >
               {task.title}
             </h3>
             {task.is_placeholder === 1 && (
-              <span className="px-1.5 py-0.5 text-xs bg-amber-50 text-amber-600 border border-amber-200 rounded">
+              <span className="px-1.5 py-0.5 text-xs bg-[var(--color-primary-light)] text-[var(--color-primary)] border border-[var(--color-primary)]/30 rounded">
                 Placeholder
               </span>
             )}
           </div>
-          <div className="flex items-center gap-3 mt-1 text-xs text-slate-500">
+          <div className="flex items-center gap-3 mt-1 text-xs text-[var(--color-text-muted)]">
             <span className="flex items-center gap-1">
               P{task.priority}
-              <span className="text-slate-400">
+              <span className="text-[var(--color-text-muted)] opacity-80">
                 {priorityLabels[task.priority]}
               </span>
             </span>
@@ -121,8 +121,8 @@ export function TaskCard({
                 style={{
                   backgroundColor: task.client_color
                     ? task.client_color + "20"
-                    : "#6B728020",
-                  color: task.client_color || "#6B7280",
+                    : "var(--color-text-muted)20",
+                  color: task.client_color || "var(--color-dark-muted)",
                 }}
               >
                 {task.client_name}
@@ -136,7 +136,7 @@ export function TaskCard({
             )}
           </div>
           {!compact && task.quick_context && (
-            <p className="mt-1 text-xs text-slate-400 italic">
+            <p className="mt-1 text-xs text-[var(--color-text-muted)] italic">
               {task.quick_context}
             </p>
           )}
@@ -149,7 +149,7 @@ export function TaskCard({
         {onEdit && (
           <button
             onClick={() => onEdit(task)}
-            className="flex-shrink-0 text-slate-400 hover:text-slate-600 text-sm"
+            className="flex-shrink-0 text-[var(--color-text-muted)] hover:text-[var(--color-dark)] text-sm"
           >
             Edit
           </button>

@@ -93,7 +93,7 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64 text-slate-400">
+      <div className="flex items-center justify-center h-64 text-[var(--color-text-muted)]">
         Loading...
       </div>
     );
@@ -103,8 +103,8 @@ export default function Home() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Today</h1>
-        <p className="text-sm text-slate-500 mt-1">
+        <h1 className="text-2xl font-bold text-[var(--color-dark)]">Today</h1>
+        <p className="text-sm text-[var(--color-text-muted)] mt-1">
           {new Date(today + "T00:00:00").toLocaleDateString("en-US", {
             weekday: "long",
             month: "long",
@@ -119,12 +119,12 @@ export default function Home() {
         {!plan?.morning_checked_in && (
           <Link
             href="/checkin"
-            className="flex-1 bg-amber-50 border border-amber-200 rounded-lg p-4 hover:bg-amber-100 transition-colors"
+            className="flex-1 bg-[var(--color-primary-light)] border border-[var(--color-primary)]/30 rounded-lg p-4 hover:bg-[var(--color-primary)]/10 transition-colors"
           >
-            <p className="text-sm font-semibold text-amber-800">
+            <p className="text-sm font-semibold text-[var(--color-primary-hover)]">
               Morning Check-in
             </p>
-            <p className="text-xs text-amber-600 mt-1">
+            <p className="text-xs text-[var(--color-primary)] mt-1">
               Review and confirm your priorities for today
             </p>
           </Link>
@@ -132,12 +132,12 @@ export default function Home() {
         {plan?.morning_checked_in && !plan?.evening_checked_in && (
           <Link
             href="/checkin"
-            className="flex-1 bg-indigo-50 border border-indigo-200 rounded-lg p-4 hover:bg-indigo-100 transition-colors"
+            className="flex-1 bg-[var(--color-secondary-light)] border border-[#00c2d8]/40 rounded-lg p-4 hover:bg-[#00c2d8]/10 transition-colors"
           >
-            <p className="text-sm font-semibold text-indigo-800">
+            <p className="text-sm font-semibold text-[#007a8a]">
               End-of-Day Review
             </p>
-            <p className="text-xs text-indigo-600 mt-1">
+            <p className="text-xs text-[var(--color-secondary)] mt-1">
               Wrap up, review blockers, and prep for tomorrow
             </p>
           </Link>
@@ -155,19 +155,19 @@ export default function Home() {
       </div>
 
       {/* Progress */}
-      <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
+      <div className="bg-white border border-[var(--color-border)] rounded-lg p-4 shadow-sm">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-sm font-medium text-slate-700">
+          <span className="text-sm font-medium text-[var(--color-dark)]">
             Daily Progress
           </span>
-          <span className="text-sm text-slate-500">
+          <span className="text-sm text-[var(--color-text-muted)]">
             {completedCount}/{tasks.length} tasks &middot;{" "}
             {Math.floor(totalMinutes / 60)}h {totalMinutes % 60}m remaining
           </span>
         </div>
         <div className="w-full bg-slate-100 rounded-full h-2.5">
           <div
-            className="bg-blue-600 h-2.5 rounded-full transition-all duration-500"
+            className="bg-[var(--color-primary)] h-2.5 rounded-full transition-all duration-500"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -178,17 +178,17 @@ export default function Home() {
 
       {/* Today's tasks */}
       <div className="space-y-2">
-        <h2 className="text-sm font-semibold text-slate-700 uppercase tracking-wide">
+        <h2 className="text-sm font-semibold text-[var(--color-dark)] uppercase tracking-wide">
           Focus List
         </h2>
         {tasks.length === 0 ? (
-          <div className="bg-white border border-slate-200 rounded-lg p-8 text-center">
-            <p className="text-slate-500 text-sm">No tasks for today yet.</p>
-            <p className="text-slate-400 text-xs mt-1">
+          <div className="bg-white border border-[var(--color-border)] rounded-lg p-8 text-center">
+            <p className="text-[var(--color-text-muted)] text-sm">No tasks for today yet.</p>
+            <p className="text-[var(--color-text-muted)] text-xs mt-1 opacity-80">
               Add some tasks and run your{" "}
               <Link
                 href="/checkin"
-                className="text-blue-600 hover:text-blue-800"
+                className="text-[var(--color-primary)] hover:text-[var(--color-primary-hover)]"
               >
                 morning check-in
               </Link>{" "}

@@ -20,14 +20,14 @@ const priorityLabels: Record<number, string> = {
 };
 
 const defaultColors = [
-  "#2563eb",
-  "#7c3aed",
+  "#8161da",
+  "#00c2d8",
   "#db2777",
   "#dc2626",
   "#ea580c",
   "#16a34a",
   "#0891b2",
-  "#4f46e5",
+  "#6b4fc9",
   "#9333ea",
   "#64748b",
 ];
@@ -40,7 +40,7 @@ export default function ClientsPage() {
   const [form, setForm] = useState({
     name: "",
     priority: 3,
-    color: "#2563eb",
+    color: "#8161da",
     notes: "",
   });
 
@@ -60,7 +60,7 @@ export default function ClientsPage() {
   }, [loadClients]);
 
   function resetForm() {
-    setForm({ name: "", priority: 3, color: "#2563eb", notes: "" });
+    setForm({ name: "", priority: 3, color: "#8161da", notes: "" });
     setEditingId(null);
     setShowForm(false);
   }
@@ -108,8 +108,8 @@ export default function ClientsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Clients</h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <h1 className="text-2xl font-bold text-[var(--color-dark)]">Clients</h1>
+          <p className="text-sm text-[var(--color-text-muted)] mt-1">
             Manage clients and their priority levels. VIP clients&apos; tasks get
             prioritized higher.
           </p>
@@ -119,7 +119,7 @@ export default function ClientsPage() {
             resetForm();
             setShowForm(true);
           }}
-          className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700"
+          className="px-4 py-2 bg-[var(--color-primary)] text-white text-sm font-medium rounded-md hover:bg-[var(--color-primary-hover)]"
         >
           + Add Client
         </button>
@@ -129,28 +129,28 @@ export default function ClientsPage() {
       {showForm && (
         <form
           onSubmit={handleSubmit}
-          className="bg-white border border-slate-200 rounded-lg p-5 shadow-sm space-y-4"
+          className="bg-white border border-[var(--color-border)] rounded-lg p-5 shadow-sm space-y-4"
         >
-          <h2 className="text-lg font-semibold text-slate-900">
+          <h2 className="text-lg font-semibold text-[var(--color-dark)]">
             {editingId ? "Edit Client" : "New Client"}
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-[var(--color-dark)] mb-1">
                 Name
               </label>
               <input
                 type="text"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-[var(--color-border)] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-[var(--color-dark)] mb-1">
                 Priority
               </label>
               <select
@@ -158,7 +158,7 @@ export default function ClientsPage() {
                 onChange={(e) =>
                   setForm({ ...form, priority: parseInt(e.target.value) })
                 }
-                className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-[var(--color-border)] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
               >
                 {[1, 2, 3, 4, 5].map((p) => (
                   <option key={p} value={p}>
@@ -170,7 +170,7 @@ export default function ClientsPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-[var(--color-dark)] mb-1">
               Color
             </label>
             <div className="flex gap-2 flex-wrap">
@@ -181,8 +181,8 @@ export default function ClientsPage() {
                   onClick={() => setForm({ ...form, color: c })}
                   className={`w-8 h-8 rounded-full border-2 transition-all ${
                     form.color === c
-                      ? "border-slate-900 scale-110"
-                      : "border-transparent hover:border-slate-300"
+                      ? "border-[var(--color-dark)] scale-110"
+                      : "border-transparent hover:border-[var(--color-border)]"
                   }`}
                   style={{ backgroundColor: c }}
                 />
@@ -191,14 +191,14 @@ export default function ClientsPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-[var(--color-dark)] mb-1">
               Notes
             </label>
             <textarea
               value={form.notes}
               onChange={(e) => setForm({ ...form, notes: e.target.value })}
               rows={2}
-              className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-[var(--color-border)] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
               placeholder="Any notes about this client..."
             />
           </div>
@@ -206,14 +206,14 @@ export default function ClientsPage() {
           <div className="flex gap-2">
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700"
+              className="px-4 py-2 bg-[var(--color-primary)] text-white text-sm font-medium rounded-md hover:bg-[var(--color-primary-hover)]"
             >
               {editingId ? "Update" : "Create"} Client
             </button>
             <button
               type="button"
               onClick={resetForm}
-              className="px-4 py-2 text-sm text-slate-600 border border-slate-200 rounded-md hover:bg-slate-50"
+              className="px-4 py-2 text-sm text-[var(--color-text-muted)] border border-[var(--color-border)] rounded-md hover:bg-[var(--color-primary-light)]/30"
             >
               Cancel
             </button>
@@ -223,11 +223,11 @@ export default function ClientsPage() {
 
       {/* Client list */}
       {loading ? (
-        <div className="text-center text-slate-400 py-8">Loading...</div>
+        <div className="text-center text-[var(--color-text-muted)] py-8">Loading...</div>
       ) : clients.length === 0 ? (
-        <div className="bg-white border border-slate-200 rounded-lg p-8 text-center">
-          <p className="text-slate-500">No clients yet.</p>
-          <p className="text-slate-400 text-sm mt-1">
+        <div className="bg-white border border-[var(--color-border)] rounded-lg p-8 text-center">
+          <p className="text-[var(--color-text-muted)]">No clients yet.</p>
+          <p className="text-[var(--color-text-muted)] text-sm mt-1 opacity-80">
             Add your first client to start assigning tasks.
           </p>
         </div>
@@ -236,7 +236,7 @@ export default function ClientsPage() {
           {clients.map((client) => (
             <div
               key={client.id}
-              className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm flex items-center gap-4"
+              className="bg-white border border-[var(--color-border)] rounded-lg p-4 shadow-sm flex items-center gap-4"
             >
               <div
                 className="w-3 h-10 rounded-full flex-shrink-0"
@@ -244,27 +244,27 @@ export default function ClientsPage() {
               />
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <h3 className="font-medium text-slate-900">{client.name}</h3>
+                  <h3 className="font-medium text-[var(--color-dark)]">{client.name}</h3>
                   <span
                     className={`px-2 py-0.5 text-xs rounded font-medium ${
                       client.priority === 1
                         ? "bg-red-50 text-red-700 border border-red-200"
                         : client.priority === 2
                         ? "bg-orange-50 text-orange-700 border border-orange-200"
-                        : "bg-slate-50 text-slate-600 border border-slate-200"
+                        : "bg-[var(--color-primary-light)]/50 text-[var(--color-text-muted)] border border-[var(--color-border)]"
                     }`}
                   >
                     P{client.priority} {priorityLabels[client.priority]}
                   </span>
                 </div>
                 {client.notes && (
-                  <p className="text-xs text-slate-400 mt-1">{client.notes}</p>
+                  <p className="text-xs text-[var(--color-text-muted)] mt-1">{client.notes}</p>
                 )}
               </div>
               <div className="flex gap-2">
                 <button
                   onClick={() => startEdit(client)}
-                  className="text-sm text-slate-500 hover:text-slate-700"
+                  className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-dark)]"
                 >
                   Edit
                 </button>

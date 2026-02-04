@@ -199,7 +199,7 @@ export default function CheckinPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64 text-slate-400">
+      <div className="flex items-center justify-center h-64 text-[var(--color-text-muted)]">
         Loading...
       </div>
     );
@@ -210,8 +210,8 @@ export default function CheckinPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Daily Check-in</h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <h1 className="text-2xl font-bold text-[var(--color-dark)]">Daily Check-in</h1>
+          <p className="text-sm text-[var(--color-text-muted)] mt-1">
             {new Date(today + "T00:00:00").toLocaleDateString("en-US", {
               weekday: "long",
               month: "long",
@@ -225,8 +225,8 @@ export default function CheckinPage() {
             onClick={() => setMode("morning")}
             className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
               mode === "morning"
-                ? "bg-amber-100 text-amber-800 border border-amber-200"
-                : "text-slate-600 hover:bg-slate-100 border border-slate-200"
+                ? "bg-[var(--color-primary-light)] text-[var(--color-primary-hover)] border border-[var(--color-primary)]/30"
+                : "text-[var(--color-text-muted)] hover:bg-[var(--color-primary-light)]/30 border border-[var(--color-border)]"
             }`}
           >
             Morning
@@ -236,8 +236,8 @@ export default function CheckinPage() {
             onClick={() => setMode("evening")}
             className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
               mode === "evening"
-                ? "bg-indigo-100 text-indigo-800 border border-indigo-200"
-                : "text-slate-600 hover:bg-slate-100 border border-slate-200"
+                ? "bg-[var(--color-secondary-light)] text-[#007a8a] border border-[#00c2d8]/40"
+                : "text-[var(--color-text-muted)] hover:bg-[var(--color-primary-light)]/30 border border-[var(--color-border)]"
             }`}
           >
             End of Day
@@ -247,27 +247,27 @@ export default function CheckinPage() {
       </div>
 
       {/* Stats bar */}
-      <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
+      <div className="bg-white border border-[var(--color-border)] rounded-lg p-4 shadow-sm">
         <div className="flex gap-6 text-sm">
           <div>
-            <span className="text-slate-500">Tasks today:</span>{" "}
+            <span className="text-[var(--color-text-muted)]">Tasks today:</span>{" "}
             <span className="font-medium">{tasks.length}/6</span>
           </div>
           <div>
-            <span className="text-slate-500">Completed:</span>{" "}
+            <span className="text-[var(--color-text-muted)]">Completed:</span>{" "}
             <span className="font-medium text-green-600">
               {tasks.filter((t) => t.completed === 1).length}
             </span>
           </div>
           <div>
-            <span className="text-slate-500">Remaining time:</span>{" "}
+            <span className="text-[var(--color-text-muted)]">Remaining time:</span>{" "}
             <span className="font-medium">
               {Math.floor(totalMinutes / 60)}h {totalMinutes % 60}m
             </span>
           </div>
           {placeholderTasks.length > 0 && (
             <div>
-              <span className="text-amber-600 font-medium">
+              <span className="text-[var(--color-primary)] font-medium">
                 {placeholderTasks.length} placeholder(s) to flesh out
               </span>
             </div>
@@ -278,11 +278,11 @@ export default function CheckinPage() {
       {/* Morning Check-in */}
       {mode === "morning" && (
         <div className="space-y-4">
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-            <h2 className="text-lg font-semibold text-amber-900">
+          <div className="bg-[var(--color-primary-light)] border border-[var(--color-primary)]/30 rounded-lg p-4">
+            <h2 className="text-lg font-semibold text-[var(--color-primary-hover)]">
               Morning Check-in
             </h2>
-            <p className="text-sm text-amber-700 mt-1">
+            <p className="text-sm text-[var(--color-primary)] mt-1">
               Review your prioritized list for today. Adjust if needed &mdash;
               swap tasks, change order, or replace items based on what you know
               this morning.
@@ -292,13 +292,13 @@ export default function CheckinPage() {
           {/* Today's tasks */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-slate-700">
+              <h3 className="text-sm font-semibold text-[var(--color-dark)]">
                 Today&apos;s 6 Tasks (auto-prioritized)
               </h3>
               <button
                 onClick={handleRegenerate}
                 disabled={saving}
-                className="text-xs text-blue-600 hover:text-blue-800 font-medium disabled:opacity-50"
+                className="text-xs text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] font-medium disabled:opacity-50"
               >
                 Re-prioritize
               </button>
@@ -322,7 +322,7 @@ export default function CheckinPage() {
               </div>
             ))}
             {tasks.length === 0 && (
-              <p className="text-sm text-slate-400 py-4 text-center">
+              <p className="text-sm text-[var(--color-text-muted)] py-4 text-center">
                 No tasks for today. Add some tasks first, then re-prioritize.
               </p>
             )}
@@ -331,7 +331,7 @@ export default function CheckinPage() {
           {/* Swap in from backlog */}
           {tasks.length < 6 && availableTasks.length > 0 && (
             <div className="space-y-2">
-              <h3 className="text-sm font-semibold text-slate-700">
+              <h3 className="text-sm font-semibold text-[var(--color-dark)]">
                 Add from Backlog
               </h3>
               <div className="space-y-1">
@@ -343,7 +343,7 @@ export default function CheckinPage() {
                     <TaskCard task={task} compact />
                     <button
                       onClick={() => handleAddToPlan(task.id)}
-                      className="text-xs text-blue-600 hover:text-blue-800 font-medium flex-shrink-0"
+                      className="text-xs text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] font-medium flex-shrink-0"
                     >
                       + Add
                     </button>
@@ -355,7 +355,7 @@ export default function CheckinPage() {
 
           {/* Morning notes */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-slate-700">
+            <label className="text-sm font-semibold text-[var(--color-dark)]">
               Morning Notes
             </label>
             <textarea
@@ -363,14 +363,14 @@ export default function CheckinPage() {
               onChange={(e) => setMorningNotes(e.target.value)}
               placeholder="Any adjustments, context, or priorities for today..."
               rows={3}
-              className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="w-full px-3 py-2 border border-[var(--color-border)] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
             />
           </div>
 
           <button
             onClick={handleMorningCheckin}
             disabled={saving}
-            className="w-full py-3 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 disabled:opacity-50 transition-colors"
+            className="w-full py-3 bg-[var(--color-primary)] text-white font-medium rounded-lg hover:bg-[var(--color-primary-hover)] disabled:opacity-50 transition-colors"
           >
             {plan?.morning_checked_in
               ? "Update Morning Check-in"
@@ -382,11 +382,11 @@ export default function CheckinPage() {
       {/* Evening Check-in */}
       {mode === "evening" && (
         <div className="space-y-4">
-          <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
-            <h2 className="text-lg font-semibold text-indigo-900">
+          <div className="bg-[var(--color-secondary-light)] border border-[#00c2d8]/40 rounded-lg p-4">
+            <h2 className="text-lg font-semibold text-[#007a8a]">
               End-of-Day Review
             </h2>
-            <p className="text-sm text-indigo-700 mt-1">
+            <p className="text-sm text-[var(--color-secondary)] mt-1">
               Review what got done, flesh out placeholder tasks, identify
               blockers, and prep tomorrow&apos;s list.
             </p>
@@ -394,7 +394,7 @@ export default function CheckinPage() {
 
           {/* Task review */}
           <div className="space-y-2">
-            <h3 className="text-sm font-semibold text-slate-700">
+            <h3 className="text-sm font-semibold text-[var(--color-dark)]">
               Today&apos;s Tasks
             </h3>
             {tasks.map((task) => (
@@ -412,11 +412,11 @@ export default function CheckinPage() {
 
           {/* Placeholder tasks needing attention */}
           {placeholderTasks.length > 0 && (
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 space-y-3">
-              <h3 className="text-sm font-semibold text-amber-800">
+            <div className="bg-[var(--color-primary-light)] border border-[var(--color-primary)]/30 rounded-lg p-4 space-y-3">
+              <h3 className="text-sm font-semibold text-[var(--color-primary-hover)]">
                 Placeholders to Flesh Out
               </h3>
-              <p className="text-xs text-amber-600">
+              <p className="text-xs text-[var(--color-primary)]">
                 These tasks were quick-added and need full details. Click
                 &quot;Edit&quot; to add description, priority, client, and due date.
               </p>
@@ -447,7 +447,7 @@ export default function CheckinPage() {
                   key={task.id}
                   className="bg-white rounded p-3 border border-red-100"
                 >
-                  <p className="text-sm font-medium text-slate-900">
+                  <p className="text-sm font-medium text-[var(--color-dark)]">
                     {task.title}
                   </p>
                   <p className="text-xs text-red-500 mt-1">
@@ -460,7 +460,7 @@ export default function CheckinPage() {
 
           {/* Quick add for tomorrow */}
           <div className="space-y-2">
-            <h3 className="text-sm font-semibold text-slate-700">
+            <h3 className="text-sm font-semibold text-[var(--color-dark)]">
               Quick-add for Tomorrow
             </h3>
             <QuickAddTask onTaskAdded={loadAllTasks} />
@@ -468,7 +468,7 @@ export default function CheckinPage() {
 
           {/* Evening notes */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-slate-700">
+            <label className="text-sm font-semibold text-[var(--color-dark)]">
               End-of-Day Notes
             </label>
             <textarea
@@ -476,14 +476,14 @@ export default function CheckinPage() {
               onChange={(e) => setEveningNotes(e.target.value)}
               placeholder="Reflection, carry-overs, anything to address before tomorrow..."
               rows={3}
-              className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-[var(--color-border)] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
             />
           </div>
 
           <button
             onClick={handleEveningCheckin}
             disabled={saving}
-            className="w-full py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+            className="w-full py-3 bg-[var(--color-secondary)] text-white font-medium rounded-lg hover:bg-[#0099ad] disabled:opacity-50 transition-colors"
           >
             {plan?.evening_checked_in
               ? "Update End-of-Day Review"

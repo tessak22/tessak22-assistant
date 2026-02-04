@@ -31,7 +31,7 @@ interface Task {
 
 export default function TasksPage() {
   return (
-    <Suspense fallback={<div className="text-center text-slate-400 py-8">Loading...</div>}>
+    <Suspense fallback={<div className="text-center text-[var(--color-text-muted)] py-8">Loading...</div>}>
       <TasksContent />
     </Suspense>
   );
@@ -175,8 +175,8 @@ function TasksContent() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Tasks</h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <h1 className="text-2xl font-bold text-[var(--color-dark)]">Tasks</h1>
+          <p className="text-sm text-[var(--color-text-muted)] mt-1">
             Manage your task backlog. Each task is max 1 hour (Ivy Lee Method).
           </p>
         </div>
@@ -185,7 +185,7 @@ function TasksContent() {
             resetForm();
             setShowForm(true);
           }}
-          className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700"
+          className="px-4 py-2 bg-[var(--color-primary)] text-white text-sm font-medium rounded-md hover:bg-[var(--color-primary-hover)]"
         >
           + New Task
         </button>
@@ -202,8 +202,8 @@ function TasksContent() {
             onClick={() => setFilter(s)}
             className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-colors ${
               filter === s
-                ? "bg-blue-50 text-blue-700 border-blue-200"
-                : "text-slate-500 border-slate-200 hover:bg-slate-50"
+                ? "bg-[var(--color-primary-light)] text-[var(--color-primary)] border-[var(--color-primary)]/30"
+                : "text-[var(--color-text-muted)] border-[var(--color-border)] hover:bg-[var(--color-primary-light)]/30"
             }`}
           >
             {s === "" ? "All" : s === "in_progress" ? "In Progress" : s.charAt(0).toUpperCase() + s.slice(1)}
@@ -215,27 +215,27 @@ function TasksContent() {
       {showForm && (
         <form
           onSubmit={handleSubmit}
-          className="bg-white border border-slate-200 rounded-lg p-5 shadow-sm space-y-4"
+          className="bg-white border border-[var(--color-border)] rounded-lg p-5 shadow-sm space-y-4"
         >
-          <h2 className="text-lg font-semibold text-slate-900">
+          <h2 className="text-lg font-semibold text-[var(--color-dark)]">
             {editingId ? "Edit Task" : "New Task"}
           </h2>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-[var(--color-dark)] mb-1">
               Title
             </label>
             <input
               type="text"
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
-              className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-[var(--color-border)] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-[var(--color-dark)] mb-1">
               Description
             </label>
             <textarea
@@ -244,14 +244,14 @@ function TasksContent() {
                 setForm({ ...form, description: e.target.value })
               }
               rows={3}
-              className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-[var(--color-border)] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
               placeholder="Full task details..."
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-[var(--color-dark)] mb-1">
                 Client
               </label>
               <select
@@ -259,7 +259,7 @@ function TasksContent() {
                 onChange={(e) =>
                   setForm({ ...form, client_id: e.target.value })
                 }
-                className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-[var(--color-border)] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
               >
                 <option value="">No client</option>
                 {clients.map((c) => (
@@ -271,7 +271,7 @@ function TasksContent() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-[var(--color-dark)] mb-1">
                 Priority
               </label>
               <select
@@ -279,7 +279,7 @@ function TasksContent() {
                 onChange={(e) =>
                   setForm({ ...form, priority: parseInt(e.target.value) })
                 }
-                className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-[var(--color-border)] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
               >
                 <option value={1}>1 - Critical</option>
                 <option value={2}>2 - High</option>
@@ -290,7 +290,7 @@ function TasksContent() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-[var(--color-dark)] mb-1">
                 Due Date
               </label>
               <input
@@ -299,14 +299,14 @@ function TasksContent() {
                 onChange={(e) =>
                   setForm({ ...form, due_date: e.target.value })
                 }
-                className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-[var(--color-border)] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-[var(--color-dark)] mb-1">
                 Estimate (minutes, max 60)
               </label>
               <input
@@ -321,12 +321,12 @@ function TasksContent() {
                 min={5}
                 max={60}
                 step={5}
-                className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-[var(--color-border)] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-[var(--color-dark)] mb-1">
                 Quick Context
               </label>
               <input
@@ -335,14 +335,14 @@ function TasksContent() {
                 onChange={(e) =>
                   setForm({ ...form, quick_context: e.target.value })
                 }
-                className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-[var(--color-border)] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
                 placeholder="Email ref, meeting note..."
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-[var(--color-dark)] mb-1">
               Predicted Blockers
             </label>
             <input
@@ -351,7 +351,7 @@ function TasksContent() {
               onChange={(e) =>
                 setForm({ ...form, predicted_blockers: e.target.value })
               }
-              className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-[var(--color-border)] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
               placeholder="Anything that could block this task..."
             />
           </div>
@@ -364,9 +364,9 @@ function TasksContent() {
               onChange={(e) =>
                 setForm({ ...form, is_placeholder: e.target.checked })
               }
-              className="rounded border-slate-300"
+              className="rounded border-[var(--color-border)]"
             />
-            <label htmlFor="is_placeholder" className="text-sm text-slate-600">
+            <label htmlFor="is_placeholder" className="text-sm text-[var(--color-text-muted)]">
               Placeholder (needs fleshing out during EOD review)
             </label>
           </div>
@@ -374,14 +374,14 @@ function TasksContent() {
           <div className="flex gap-2">
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700"
+              className="px-4 py-2 bg-[var(--color-primary)] text-white text-sm font-medium rounded-md hover:bg-[var(--color-primary-hover)]"
             >
               {editingId ? "Update" : "Create"} Task
             </button>
             <button
               type="button"
               onClick={resetForm}
-              className="px-4 py-2 text-sm text-slate-600 border border-slate-200 rounded-md hover:bg-slate-50"
+              className="px-4 py-2 text-sm text-[var(--color-text-muted)] border border-[var(--color-border)] rounded-md hover:bg-[var(--color-primary-light)]/30"
             >
               Cancel
             </button>
@@ -391,10 +391,10 @@ function TasksContent() {
 
       {/* Task list */}
       {loading ? (
-        <div className="text-center text-slate-400 py-8">Loading...</div>
+        <div className="text-center text-[var(--color-text-muted)] py-8">Loading...</div>
       ) : tasks.length === 0 ? (
-        <div className="bg-white border border-slate-200 rounded-lg p-8 text-center">
-          <p className="text-slate-500">
+        <div className="bg-white border border-[var(--color-border)] rounded-lg p-8 text-center">
+          <p className="text-[var(--color-text-muted)]">
             No {filter && filter !== "" ? filter : ""} tasks.
           </p>
         </div>
@@ -419,7 +419,7 @@ function TasksContent() {
                     onClick={() =>
                       handleStatusChange(task.id, "in_progress")
                     }
-                    className="text-xs text-blue-500 hover:text-blue-700"
+                    className="text-xs text-[var(--color-primary)] hover:text-[var(--color-primary-hover)]"
                   >
                     Start
                   </button>
@@ -429,7 +429,7 @@ function TasksContent() {
                     onClick={() =>
                       handleStatusChange(task.id, "deferred")
                     }
-                    className="text-xs text-slate-400 hover:text-slate-600"
+                    className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-dark)]"
                   >
                     Defer
                   </button>
@@ -439,7 +439,7 @@ function TasksContent() {
                     onClick={() =>
                       handleStatusChange(task.id, "pending")
                     }
-                    className="text-xs text-blue-500 hover:text-blue-700"
+                    className="text-xs text-[var(--color-primary)] hover:text-[var(--color-primary-hover)]"
                   >
                     Reopen
                   </button>

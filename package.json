@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3001 -H 0.0.0.0",
+    "dev:3000": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3001",
+    "start:3000": "next start",
     "lint": "next lint",
     "db:init": "npx tsx src/lib/db-init.ts"
   },
