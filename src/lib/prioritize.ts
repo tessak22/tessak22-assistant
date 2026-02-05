@@ -1,7 +1,8 @@
-import { getDb } from "./db";
+import { db } from "./db";
 
 export interface TaskWithClient {
   id: string;
+  user_id: string;
   title: string;
   description: string | null;
   client_id: string | null;
@@ -9,7 +10,7 @@ export interface TaskWithClient {
   due_date: string | null;
   estimate_minutes: number;
   status: string;
-  is_placeholder: number;
+  is_placeholder: boolean;
   quick_context: string | null;
   predicted_blockers: string | null;
   completed_at: string | null;
@@ -29,17 +30,15 @@ export interface TaskWithClient {
  * 3. Client priority (1=VIP, 5=lowest) — breaks ties between same due date + task priority
  * 4. Creation date — older tasks get slight priority boost
  *
- * Returns the top 6 tasks for the day, each ≤ 60 minutes.
+ * Returns the top N tasks for the day, each ≤ 60 minutes.
  */
-export function getPrioritizedTasks(
+export async function getPrioritizedTasks(
+  userId: string,
   dateStr: string,
   limit: number = 6
-): TaskWithClient[] {
-  const db = getDb();
-
-  const tasks = db
-    .prepare(
-      `
+): Promise<TaskWithClient[]> {
+  const tasks = await db.all<TaskWithClient>(
+    `
     SELECT
       t.*,
       c.name as client_name,
@@ -47,13 +46,14 @@ export function getPrioritizedTasks(
       c.color as client_color
     FROM tasks t
     LEFT JOIN clients c ON t.client_id = c.id
-    WHERE t.status = 'pending'
+    WHERE t.user_id = $1
+      AND t.status = 'pending'
       AND t.estimate_minutes <= 60
     ORDER BY
       -- Overdue/due today first
       CASE
-        WHEN t.due_date IS NOT NULL AND t.due_date <= ? THEN 0
-        WHEN t.due_date IS NOT NULL AND t.due_date <= date(?, '+3 days') THEN 1
+        WHEN t.due_date IS NOT NULL AND t.due_date <= $2::date THEN 0
+        WHEN t.due_date IS NOT NULL AND t.due_date <= ($2::date + INTERVAL '3 days') THEN 1
         WHEN t.due_date IS NOT NULL THEN 2
         ELSE 3
       END ASC,
@@ -63,10 +63,10 @@ export function getPrioritizedTasks(
       COALESCE(c.priority, 5) ASC,
       -- Older tasks first
       t.created_at ASC
-    LIMIT ?
-  `
-    )
-    .all(dateStr, dateStr, limit) as TaskWithClient[];
+    LIMIT $3
+  `,
+    [userId, dateStr, limit]
+  );
 
   return tasks;
 }
