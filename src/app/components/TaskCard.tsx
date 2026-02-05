@@ -66,13 +66,22 @@ export function TaskCard({
     new Date(task.due_date + "T00:00:00") < new Date(new Date().toISOString().split("T")[0] + "T00:00:00") &&
     !isDone;
 
+  const leftBorderColor = task.client_color
+    ? undefined
+    : (priorityStyles[task.priority] || "border-l-gray-300");
+
   return (
     <div
       className={`bg-white border border-[var(--color-border)] rounded-lg border-l-4 ${
-        priorityStyles[task.priority] || "border-l-gray-300"
+        !task.client_color ? leftBorderColor : ""
       } ${isDone ? "opacity-60" : ""} ${
         compact ? "p-3" : "p-4"
       } shadow-sm hover:shadow-md transition-shadow`}
+      style={
+        task.client_color
+          ? { borderLeftColor: task.client_color }
+          : undefined
+      }
     >
       <div className="flex items-start gap-3">
         {showPosition && task.position && (
