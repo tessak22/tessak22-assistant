@@ -9,7 +9,11 @@
     "start": "next start -p 3001",
     "start:3000": "next start",
     "lint": "next lint",
-    "db:init": "npx tsx src/lib/db-init.ts"
+    "db:init": "npx tsx src/lib/db-init.ts",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "test:report": "playwright show-report"
   },
   "repository": {
     "type": "git",
@@ -22,7 +26,6 @@
     "@auth/pg-adapter": "^1.11.1",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/better-sqlite3": "^7.6.13",
-    "@types/node": "^25.2.0",
     "@types/react": "^19.2.11",
     "@types/uuid": "^10.0.0",
     "better-sqlite3": "^12.6.2",
@@ -38,6 +41,8 @@
     "uuid": "^13.0.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.1",
+    "@types/node": "^25.2.0",
     "@types/pg": "^8.16.0"
   }
 }

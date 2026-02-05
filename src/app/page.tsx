@@ -204,7 +204,9 @@ export default function Home() {
               onComplete={
                 task.completed !== 1 ? handleCompleteTask : undefined
               }
-              onEdit={(t) => (window.location.href = `/tasks?edit=${t.id}`)}
+              onEdit={(t) => {
+                window.location.href = `/tasks?edit=${t.id}`;
+              }}
             />
           ))
         )}

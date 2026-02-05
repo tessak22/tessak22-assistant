@@ -23,6 +23,21 @@ async function initializeSchema() {
   if (schemaInitialized) return;
 
   try {
+    // Check if schema is already initialized by checking for users table
+    const result = await pool.query(
+      `SELECT EXISTS (
+        SELECT FROM information_schema.tables
+        WHERE table_schema = 'public'
+        AND table_name = 'users'
+      )`
+    );
+
+    if (result.rows[0].exists) {
+      schemaInitialized = true;
+      return;
+    }
+
+    // Schema doesn't exist, initialize it
     const schemaPath = path.join(process.cwd(), "src", "lib", "schema.sql");
     const schema = fs.readFileSync(schemaPath, "utf-8");
     await pool.query(schema);
