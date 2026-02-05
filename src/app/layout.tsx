@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Nav } from "./components/Nav";
+import { Providers } from "./components/Providers";
 
 export const metadata: Metadata = {
   title: "Ivy Lee Tracker",
@@ -15,8 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen bg-[var(--color-background)]" suppressHydrationWarning>
-        <Nav />
-        <main className="max-w-5xl mx-auto px-4 py-6">{children}</main>
+        <Providers>
+          <Nav />
+          <main className="max-w-5xl mx-auto px-4 py-6">{children}</main>
+        </Providers>
       </body>
     </html>
   );

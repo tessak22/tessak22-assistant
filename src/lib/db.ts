@@ -1,72 +1,111 @@
-import Database from "better-sqlite3";
+import { Pool, QueryResult, QueryResultRow } from "pg";
+import fs from "fs";
 import path from "path";
 
-const DB_PATH =
-  process.env.DATABASE_PATH ||
-  path.join(process.cwd(), "ivy-lee.db");
+// PostgreSQL connection pool
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  max: 20,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000,
+});
 
-let db: Database.Database | null = null;
+// Handle pool errors
+pool.on("error", (err) => {
+  console.error("Unexpected error on idle client", err);
+  process.exit(-1);
+});
 
-export function getDb(): Database.Database {
-  if (!db) {
-    db = new Database(DB_PATH);
-    db.pragma("journal_mode = WAL");
-    db.pragma("foreign_keys = ON");
-    initializeSchema(db);
+// Initialize schema on first connection
+let schemaInitialized = false;
+
+async function initializeSchema() {
+  if (schemaInitialized) return;
+
+  try {
+    const schemaPath = path.join(process.cwd(), "src", "lib", "schema.sql");
+    const schema = fs.readFileSync(schemaPath, "utf-8");
+    await pool.query(schema);
+    schemaInitialized = true;
+    console.log("✅ Database schema initialized");
+  } catch (error) {
+    console.error("Failed to initialize database schema:", error);
+    throw error;
   }
-  return db;
 }
 
-function initializeSchema(db: Database.Database) {
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS clients (
-      id TEXT PRIMARY KEY,
-      name TEXT NOT NULL,
-      priority INTEGER NOT NULL DEFAULT 3,
-      color TEXT NOT NULL DEFAULT '#6B7280',
-      notes TEXT,
-      created_at TEXT NOT NULL DEFAULT (datetime('now')),
-      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
-    );
+// Database query interface
+export const db = {
+  /**
+   * Execute a query and return all rows
+   */
+  async query<T extends QueryResultRow = any>(
+    text: string,
+    params?: any[]
+  ): Promise<QueryResult<T>> {
+    await initializeSchema();
+    return pool.query<T>(text, params);
+  },
 
-    CREATE TABLE IF NOT EXISTS tasks (
-      id TEXT PRIMARY KEY,
-      title TEXT NOT NULL,
-      description TEXT,
-      client_id TEXT,
-      priority INTEGER NOT NULL DEFAULT 3,
-      due_date TEXT,
-      estimate_minutes INTEGER NOT NULL DEFAULT 60,
-      status TEXT NOT NULL DEFAULT 'pending',
-      is_placeholder INTEGER NOT NULL DEFAULT 0,
-      quick_context TEXT,
-      predicted_blockers TEXT,
-      completed_at TEXT,
-      created_at TEXT NOT NULL DEFAULT (datetime('now')),
-      updated_at TEXT NOT NULL DEFAULT (datetime('now')),
-      FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE SET NULL
-    );
+  /**
+   * Get a single row (equivalent to SQLite's get())
+   */
+  async get<T extends QueryResultRow = any>(
+    text: string,
+    params?: any[]
+  ): Promise<T | undefined> {
+    await initializeSchema();
+    const result = await pool.query<T>(text, params);
+    return result.rows[0];
+  },
 
-    CREATE TABLE IF NOT EXISTS daily_plans (
-      id TEXT PRIMARY KEY,
-      date TEXT NOT NULL UNIQUE,
-      morning_checked_in INTEGER NOT NULL DEFAULT 0,
-      evening_checked_in INTEGER NOT NULL DEFAULT 0,
-      morning_notes TEXT,
-      evening_notes TEXT,
-      created_at TEXT NOT NULL DEFAULT (datetime('now')),
-      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
-    );
+  /**
+   * Get all rows (equivalent to SQLite's all())
+   */
+  async all<T extends QueryResultRow = any>(
+    text: string,
+    params?: any[]
+  ): Promise<T[]> {
+    await initializeSchema();
+    const result = await pool.query<T>(text, params);
+    return result.rows;
+  },
 
-    CREATE TABLE IF NOT EXISTS daily_plan_tasks (
-      id TEXT PRIMARY KEY,
-      daily_plan_id TEXT NOT NULL,
-      task_id TEXT NOT NULL,
-      position INTEGER NOT NULL,
-      completed INTEGER NOT NULL DEFAULT 0,
-      FOREIGN KEY (daily_plan_id) REFERENCES daily_plans(id) ON DELETE CASCADE,
-      FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE CASCADE,
-      UNIQUE(daily_plan_id, task_id)
-    );
-  `);
-}
+  /**
+   * Execute a query without returning rows (for INSERT/UPDATE/DELETE)
+   */
+  async run(text: string, params?: any[]): Promise<QueryResult> {
+    await initializeSchema();
+    return pool.query(text, params);
+  },
+
+  /**
+   * Execute a transaction
+   */
+  async transaction<T>(callback: (client: any) => Promise<T>): Promise<T> {
+    await initializeSchema();
+    const client = await pool.connect();
+    try {
+      await client.query("BEGIN");
+      const result = await callback(client);
+      await client.query("COMMIT");
+      return result;
+    } catch (error) {
+      await client.query("ROLLBACK");
+      throw error;
+    } finally {
+      client.release();
+    }
+  },
+};
+
+// Graceful shutdown
+process.on("SIGINT", async () => {
+  await pool.end();
+  process.exit(0);
+});
+
+process.on("SIGTERM", async () => {
+  await pool.end();
+  process.exit(0);
+});
